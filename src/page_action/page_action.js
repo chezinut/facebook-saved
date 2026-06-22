@@ -112,6 +112,25 @@ onClick("#postLinksButton", () => {
     return;
   }
 
+  // Validate URL format and protocol (only allow http/https)
+  let parsedUrl;
+  try {
+    parsedUrl = new URL(url);
+  } catch (e) {
+    UIkit.notification("Please enter a valid URL (e.g., https://example.com).", {
+      status: "warning",
+      pos: "top-center"
+    });
+    return;
+  }
+
+  if (parsedUrl.protocol !== "http:" && parsedUrl.protocol !== "https:") {
+    UIkit.notification("URL must start with http:// or https://", {
+      status: "warning",
+      pos: "top-center"
+    });
+    return;
+  }
   if (!linksFound || linksFound.length === 0) {
     UIkit.notification("No links found to post!", { status: "warning", pos: "top-center" });
     return;
